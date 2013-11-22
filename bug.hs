@@ -25,11 +25,6 @@ move (dx,dy) (Bug x y) = if (x + dx) < size && (y + dy) < size && (x+dx) >= 0 &&
                          else
                            Bug x y
 
--- takes StdGen, returns an integer tuple.
-getDeltas' :: StdGen -> (Integer, Integer)
-getDeltas' g = (x!!0, x!!1)
-  where x = take 2 (randomRs (-1, 1) g :: [Integer])
-
 -- return a list of tuples with x,y deltas
 -- works inside of IO monad!
 deltas :: IO [(Integer, Integer)]
