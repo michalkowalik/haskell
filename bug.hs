@@ -36,9 +36,8 @@ deltas = do
 
 main :: IO ()
 main = do
-  putStrLn "bugs on the cheesboard"
+  putStrLn "bugs on the cheesboard, initial state:"
   print $ board bc
-  g <- newStdGen
   d <- deltas
   
   let b = board $ [move (d!!x) (bc!!x) | x <- [0..224]]
