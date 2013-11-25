@@ -18,14 +18,7 @@ bc = [(Bug x y) | x <- [0..(size - 1)], y <- [0..(size - 1)]]
 board :: [Bug] -> [((Integer, Integer), Int)]
 board bc = [((x,y), length $ filter (\a -> a == Bug x y) bc) | x <- [0..(size - 1)], y <- [0..(size - 1)]]
 
--- a simple view of a single board line:
---lineView :: Integer -> [((Integer, Integer), Int)] -> [Char]
---lineView line b = (unwords [show $ snd x | x <- b, (fst (fst x)) == line]) ++ "\n"
-
 -- a simple view of a complete board:
---boardView :: [((Integer, Integer), Int)] -> [Char]
---boardView b = unwords [lineView x b | x <- [0..(size - 1)]]
-
 boardView :: [((Integer, Integer), Int)] -> [Char]
 boardView b = unwords [lineView (filter (\a -> (fst (fst a)) == x) b) | x <- [0..(size - 1)]]
                where lineView bb = (unwords [show $ snd x | x <- bb]) ++ "\n"
