@@ -40,31 +40,31 @@ deltas = do
                (take (size ^ 2) (randomRs (-1, 1) g':: [Int]))
 
 
-nextState' :: [Bug] -> IO [Bug]
-nextState' bc = do
+nextState :: [Bug] -> IO [Bug]
+nextState bc = do
   d <- deltas
   return [(move (d!!x) (bc!!x)) | x <- [0..(size ^ 2 - 1)]]
 
- ---
- --  revs <- take 100 $ iterate nextState' bc
- ----
-revs :: [Bug] -> IO [[Bug]]
-revs bugs = do
-  nextBugs <- nextState' bugs
-  return $ bugs : nextBugs : []
-
+iterate' :: (a -> IO a) -> a -> Int -> IO [a]
+iterate' action value iteration = do
+  result <- action value
+  if iteration >= 100
+    then return []
+    else do
+     rest <- iterate' action result (iteration + 1)
+     return $ result : rest
+    
 
 main :: IO ()
 main = do
   putStrLn "bugs on the cheesboard, initial state:"
   putStrLn $ boardView $ board bc
-  d <- deltas
+  revs <- iterate' nextState bc 0
 
-  bc' <- nextState' bc
-  let b' = board $ bc'
-  putStrLn "Modified table:"
-  putStrLn $ boardView b'
+  let b = board $ revs!!99
+  putStrLn "Modified table after 100 moves:"
+  putStrLn $ boardView b
 
-  putStrLn ("sum of bugs on the board: " ++  show (sum $ map snd b'))
+  putStrLn ("sum of bugs on the board: " ++  show (sum $ map snd b))
   putStrLn "Max value on the board: "
-  print $ [x | x <- b', (snd x) == (maximum $ map snd b')]
+  print $ [x | x <- b, (snd x) == (maximum $ map snd b)]
