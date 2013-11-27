@@ -40,9 +40,6 @@ deltas = do
                (take (size ^ 2) (randomRs (-1, 1) g':: [Int]))
 
 
-nextState :: [Bug] -> [(Int, Int)] -> [Bug]
-nextState b d =  [(move (d!!x) (b!!x)) | x <- [0..(size ^ 2 - 1)]]
-
 nextState' :: [Bug] -> IO [Bug]
 nextState' bc = do
   d <- deltas
@@ -57,19 +54,17 @@ revs bugs = do
   return $ bugs : nextBugs : []
 
 
-
 main :: IO ()
 main = do
   putStrLn "bugs on the cheesboard, initial state:"
   putStrLn $ boardView $ board bc
   d <- deltas
 
-  let b  = board $ nextState  bc d
   bc' <- nextState' bc
   let b' = board $ bc'
   putStrLn "Modified table:"
   putStrLn $ boardView b'
 
-  putStrLn ("sum of bugs on the board: " ++  show (sum $ map snd b))
+  putStrLn ("sum of bugs on the board: " ++  show (sum $ map snd b'))
   putStrLn "Max value on the board: "
-  print $ [x | x <- b, (snd x) == (maximum $ map snd b)]
+  print $ [x | x <- b', (snd x) == (maximum $ map snd b')]
