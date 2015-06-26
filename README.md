@@ -1,3 +1,3 @@
 haskell
 =======
-Various haskell snippets / examples / learning codes. nothing substantial really.
+Various haskell snippets / examples / learning code. nothing substantial really.
