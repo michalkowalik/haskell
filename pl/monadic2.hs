@@ -1,6 +1,5 @@
 import Data.Ratio
 import Data.List
---import Data.List (all)
 
 newtype Prob a = Prob {getProb :: [(a, Rational)]} deriving Show
 
@@ -39,6 +38,7 @@ flipThree = do
   c <- loadedCoin
   return (all (== Tails) [a, b, c])
 
+-- reduce partial results to single false/true probability result
 red :: Prob Bool -> Prob Bool
 red coins = Prob $ map (s . unzip) . groupBy (\a b -> fst a == fst b) . sort $ series
   where series = getProb coins
